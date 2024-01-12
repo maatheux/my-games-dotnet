@@ -13,4 +13,8 @@
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Models\Base.cs" />
+  </ItemGroup>
+
 </Project>

@@ -2,10 +2,10 @@
 
 namespace MyGames.Models;
 
-[Table("Category")]
-public class Category
+[Table("Plataform")]
+public class Plataform
 {
-    
     public int Id { get; set; }
     public string Name { get; set; }
+    public int IdCompanyOwner { get; set; }
 }

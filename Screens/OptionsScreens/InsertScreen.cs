@@ -1,4 +1,7 @@
 ﻿using MyGames.Screens.CategoryScreens;
+using MyGames.Screens.CompanyScreens;
+using MyGames.Screens.PlataformScreens;
+using MyGames.Screens.PublisherScreens;
 
 namespace MyGames.Screens.OptionsScreens;
 
@@ -17,10 +20,16 @@ public static class InsertScreen
             case 1:
                 InsertCategoryScreen.Load();
                 break;
-            case 2: break;
+            case 2:
+                InsertCompanyScreen.Load();
+                break;
             case 3: break;
-            case 4: break;
-            case 5: break;
+            case 4: 
+                InsertPlataformScreen.Load();
+                break;
+            case 5: 
+                InsertPublisherScreen.Load();
+                break;
             case 6: 
                 OptionsScreen.Load();
                 break;

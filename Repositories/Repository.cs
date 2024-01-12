@@ -11,4 +11,10 @@ public class Repository<T> where T : class
 
     public async Task CreateAsync(T model)
         => await _connection.InsertAsync(model);
+
+    public async Task<IEnumerable<T>> ListAsync()
+        => await _connection.GetAllAsync<T>();
+
+    public IEnumerable<T> Get()
+        => _connection.GetAll<T>();
 }

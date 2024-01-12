@@ -8,7 +8,7 @@ public static class OptionsScreen
         Console.WriteLine("Welcome to My Games!");
         Console.WriteLine("----------------------------------------------------");
         Console.WriteLine("Action options list:");
-        Console.WriteLine("1 - Insert / 2 - List / 3 - Delete / 4 - Update");
+        Console.WriteLine("1 - Insert / 2 - List / 3 - Delete / 4 - Update / 5 - Exit");
         short actionOption = short.Parse(Console.ReadLine()!);
 
         switch (actionOption)
@@ -17,6 +17,9 @@ public static class OptionsScreen
             case 2: break;
             case 3: break;
             case 4: break;
+            case 5:
+                System.Environment.Exit(0);
+                break;
             default:
                 Load(); break;
         }
