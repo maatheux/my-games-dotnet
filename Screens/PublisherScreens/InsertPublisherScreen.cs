@@ -6,9 +6,9 @@ namespace MyGames.Screens.PublisherScreens;
 
 public class InsertPublisherScreen
 {
-    public static void Load()
+    public static void Load(bool isGameLinkUp = false)
     {
-        Console.Clear();
+        if (!isGameLinkUp) Console.Clear();
         Console.WriteLine("Insert a new publisher:");
         Console.WriteLine("");
 
@@ -23,8 +23,11 @@ public class InsertPublisherScreen
         
         Create(newPublisher);
         Console.ReadKey();
-        InsertScreen.Load();
-
+        if (!isGameLinkUp)
+            InsertScreen.Load();
+        else
+            Console.Clear();
+        
     }
 
     private async static void Create(Publisher newPublisher)
