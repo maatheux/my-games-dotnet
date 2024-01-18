@@ -6,9 +6,9 @@ namespace MyGames.Screens.CategoryScreens;
 
 public static class InsertCategoryScreen
 {
-    public static void Load()
+    public static void Load(bool isGameLinkUp = false)
     {
-        Console.Clear();
+        if (!isGameLinkUp) Console.Clear();
         Console.WriteLine("Insert a new category:");
         Console.WriteLine("");
 
@@ -19,7 +19,10 @@ public static class InsertCategoryScreen
         
         Create(newCategory);
         Console.ReadKey();
-        InsertScreen.Load();
+        if (!isGameLinkUp)
+            InsertScreen.Load();
+        else
+            Console.Clear();
 
     }
 

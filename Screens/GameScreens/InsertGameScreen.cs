@@ -1,5 +1,7 @@
 ﻿using System.Globalization;
 using MyGames.Models;
+using MyGames.Repositories;
+using MyGames.Screens.CategoryScreens;
 using MyGames.Screens.OptionsScreens;
 using MyGames.Screens.PublisherScreens;
 using MyGames.shared.utils;
@@ -18,6 +20,10 @@ public class InsertGameScreen
         
         Console.Write("Name: ");
         newGame.Name = Console.ReadLine()!;
+        Console.WriteLine("");
+        
+        Console.Write("Description: ");
+        newGame.Description = Console.ReadLine()!;
         Console.WriteLine("");
 
         bool dateIsValid;
@@ -97,12 +103,38 @@ public class InsertGameScreen
         Game linkedGame = LinkPublisher(newGame);
         newGame.PublisherId = linkedGame.PublisherId;
         Console.WriteLine("");
+
+        int createdGameId = Create(newGame).Result;
+        Console.WriteLine(createdGameId);
         
         
         Console.WriteLine($"{newGame.Name} - {newGame.Release} - {newGame.Rating} - {newGame.FavoriteFlag} - {newGame.WishlistFlag} - {newGame.PublisherId}");
         Console.ReadKey();
         InsertScreen.Load();
 
+    }
+
+    private async static Task<int> Create(Game newGame)
+    {
+        int createdGameId = 0;
+        
+        try
+        {
+            GameRepository repository = new GameRepository();
+            Console.WriteLine("Processing...");
+            createdGameId = await repository.CreateReturnId(newGame);
+            // Console.Clear();
+            // Console.WriteLine("New company successfully registered!");
+            // Console.WriteLine("Press enter to return...");
+        }
+        catch (Exception e)
+        {
+            Console.Clear();
+            Console.WriteLine("Opss! Error...");
+            Console.WriteLine(e.Message);
+        }
+
+        return createdGameId;
     }
 
     public static Game LinkPublisher(Game game)
@@ -150,6 +182,64 @@ public class InsertGameScreen
                     Console.WriteLine("Id not found! Insert a valid Id...");
                     Console.WriteLine("");
                 }
+            }
+            else
+            {
+                Console.WriteLine("--------------------------------");
+                Console.WriteLine("Insert a valid option...");
+                Console.WriteLine("");
+            }
+            
+        } while (!isGameLinked);
+
+        return game;
+    }
+    
+    public static Game LinkCategory(Game game)
+    {
+        bool isGameLinked = false;
+        string createNewCategoryOption;
+        int categoryId;
+
+        do
+        {
+            IEnumerable<Category> categoriesList = SelectCategoryScreen.GetCategories();
+            Console.WriteLine("Categories Options");
+            foreach (Category category in categoriesList)
+            {
+                Console.WriteLine($"Id: {category.Id} / Name: {category.Name}");
+            }
+            Console.WriteLine("");
+            
+            Console.Write("Would you like to create a new category? (y/n): ");
+            createNewCategoryOption = Console.ReadLine()!;
+            Console.WriteLine("");
+
+            if (new List<string>() { "YES", "Y" }.Contains(createNewCategoryOption.ToUpper()))
+            {
+                InsertCategoryScreen.Load(true);
+            }
+            else if (new List<string>() { "NO", "N" }.Contains(createNewCategoryOption.ToUpper()))
+            {
+                bool validOption;
+                do
+                {
+                    Console.Write("Insert category id to link up: ");
+                    validOption = int.TryParse(Console.ReadLine()!, out categoryId);
+                    Console.WriteLine("");
+                } while (!validOption);
+
+                // Publisher? selectedPublisher = publishersList.FirstOrDefault(publisher => publisher.Id == publisherId);
+                // if (selectedPublisher != null)
+                // {
+                //     game.PublisherId = selectedPublisher.Id;
+                //     isGameLinked = true;
+                // }
+                // else
+                // {
+                //     Console.WriteLine("Id not found! Insert a valid Id...");
+                //     Console.WriteLine("");
+                // }
             }
             else
             {

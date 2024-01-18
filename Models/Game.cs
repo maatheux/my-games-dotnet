@@ -7,6 +7,7 @@ public class Game
 {
     public int Id { get; set; }
     public string Name { get; set; }
+    public string Description { get; set; }
     public DateTime Release { get; set; }
     public int Rating { get; set; }
     public bool FavoriteFlag { get; set; }
