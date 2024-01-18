@@ -105,7 +105,10 @@ public class InsertGameScreen
         Console.WriteLine("");
 
         int createdGameId = Create(newGame).Result;
-        Console.WriteLine(createdGameId);
+
+        newGame.Id = createdGameId;
+
+        LinkCategory(newGame);
         
         
         Console.WriteLine($"{newGame.Name} - {newGame.Release} - {newGame.Rating} - {newGame.FavoriteFlag} - {newGame.WishlistFlag} - {newGame.PublisherId}");
@@ -121,7 +124,7 @@ public class InsertGameScreen
         try
         {
             GameRepository repository = new GameRepository();
-            Console.WriteLine("Processing...");
+            //Console.WriteLine("Processing...");
             createdGameId = await repository.CreateReturnId(newGame);
             // Console.Clear();
             // Console.WriteLine("New company successfully registered!");
@@ -195,11 +198,13 @@ public class InsertGameScreen
         return game;
     }
     
-    public static Game LinkCategory(Game game)
+    public async static void LinkCategory(Game game)
     {
         bool isGameLinked = false;
         string createNewCategoryOption;
-        int categoryId;
+        IList<int> categoryIds = new List<int>();
+        IList<int> categoriesError = new List<int>();
+        IList<Category> categoriesSuccess = new List<Category>();
 
         do
         {
@@ -221,25 +226,83 @@ public class InsertGameScreen
             }
             else if (new List<string>() { "NO", "N" }.Contains(createNewCategoryOption.ToUpper()))
             {
-                bool validOption;
+                bool validOption, addNewIdOption;
+                int categoryId;
                 do
                 {
                     Console.Write("Insert category id to link up: ");
                     validOption = int.TryParse(Console.ReadLine()!, out categoryId);
+                    if (validOption) categoryIds.Add(categoryId);
                     Console.WriteLine("");
+
+                    do
+                    {
+                        Console.WriteLine("Would you like to link up another category? (y/n): ");
+                        string addNewId = Console.ReadLine()!;
+                        if (new List<string>() { "YES", "Y" }.Contains(addNewId.ToUpper()))
+                        {
+                            addNewIdOption = true;
+                            validOption = false;
+                        }
+                        else if (new List<string>() { "NO", "N" }.Contains(addNewId.ToUpper()))
+                            addNewIdOption = true;
+                        else
+                        {
+                            Console.WriteLine("");
+                            Console.WriteLine("Insert a valid option...");
+                            Console.WriteLine("");
+                            addNewIdOption = false;
+                        }
+                        Console.WriteLine("");
+
+                    } while (!addNewIdOption);
+                        
                 } while (!validOption);
 
-                // Publisher? selectedPublisher = publishersList.FirstOrDefault(publisher => publisher.Id == publisherId);
-                // if (selectedPublisher != null)
-                // {
-                //     game.PublisherId = selectedPublisher.Id;
-                //     isGameLinked = true;
-                // }
-                // else
-                // {
-                //     Console.WriteLine("Id not found! Insert a valid Id...");
-                //     Console.WriteLine("");
-                // }
+                Repository<GameCategory> gameCategoryRepository = new Repository<GameCategory>();
+
+                isGameLinked = true;
+
+                foreach (int id in categoryIds)
+                {
+                    Category? selectedCategory = categoriesList.FirstOrDefault(category => category.Id == id);
+                    if (selectedCategory != null)
+                    {
+                        GameCategory newGameCategory = new GameCategory()
+                        {
+                            GameId = game.Id,
+                            CategoryId = selectedCategory.Id
+                        };
+
+                        await gameCategoryRepository.CreateAsync(newGameCategory);
+                        categoriesSuccess.Add(selectedCategory);
+                    }
+                    else
+                    {
+                        categoriesError.Add(id);
+                        isGameLinked = false;
+                    }
+                }
+                Console.WriteLine("");
+
+                Console.WriteLine("Game linked up to categories:");
+                foreach (Category category in categoriesSuccess)
+                {
+                    Console.WriteLine($"Id: {category.Id} / Name: {category.Name}");
+                }
+                
+                Console.WriteLine("");
+
+                if (!isGameLinked)
+                {
+                    Console.WriteLine("Ids not found: ");
+                    foreach (int id in categoriesError)
+                    {
+                        Console.WriteLine($"Id: {id}");
+                    }
+                }
+                Console.WriteLine("");
+
             }
             else
             {
@@ -250,6 +313,5 @@ public class InsertGameScreen
             
         } while (!isGameLinked);
 
-        return game;
     }
 }
