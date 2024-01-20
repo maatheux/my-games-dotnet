@@ -108,9 +108,10 @@ public class InsertGameScreen
 
         newGame.Id = createdGameId;
 
-        LinkCategory(newGame);
+        //LinkCategory(newGame.Id);
         
-        
+        // Console.WriteLine("333333333333");
+        //
         Console.WriteLine($"{newGame.Name} - {newGame.Release} - {newGame.Rating} - {newGame.FavoriteFlag} - {newGame.WishlistFlag} - {newGame.PublisherId}");
         Console.ReadKey();
         InsertScreen.Load();
@@ -126,6 +127,8 @@ public class InsertGameScreen
             GameRepository repository = new GameRepository();
             //Console.WriteLine("Processing...");
             createdGameId = await repository.CreateReturnId(newGame);
+            await LinkCategory(createdGameId);
+            //await LinkPlataform();
             // Console.Clear();
             // Console.WriteLine("New company successfully registered!");
             // Console.WriteLine("Press enter to return...");
@@ -136,8 +139,9 @@ public class InsertGameScreen
             Console.WriteLine("Opss! Error...");
             Console.WriteLine(e.Message);
         }
-
+        
         return createdGameId;
+
     }
 
     public static Game LinkPublisher(Game game)
@@ -145,6 +149,10 @@ public class InsertGameScreen
         bool isGameLinked = false;
         string createNewPublisherOption;
         int publisherId;
+        
+        Console.WriteLine("Link Publisher Section");
+        Console.WriteLine("-------------------------------------------");
+        Console.WriteLine("");
 
         do
         {
@@ -198,25 +206,24 @@ public class InsertGameScreen
         return game;
     }
     
-    public async static void LinkCategory(Game game)
+    public async static Task LinkCategory(int idGame)
     {
         bool isGameLinked = false;
         string createNewCategoryOption;
         IList<int> categoryIds = new List<int>();
         IList<int> categoriesError = new List<int>();
         IList<Category> categoriesSuccess = new List<Category>();
+        
+        Console.WriteLine("Link Category Section");
+        Console.WriteLine("-------------------------------------------");
+        Console.WriteLine("");
 
         do
         {
             IEnumerable<Category> categoriesList = SelectCategoryScreen.GetCategories();
-            Console.WriteLine("Categories Options");
-            foreach (Category category in categoriesList)
-            {
-                Console.WriteLine($"Id: {category.Id} / Name: {category.Name}");
-            }
-            Console.WriteLine("");
+            ShowCategoriesOptions(categoriesList);
             
-            Console.Write("Would you like to create a new category? (y/n): ");
+            Console.WriteLine("Would you like to create a new category? (y/n): ");
             createNewCategoryOption = Console.ReadLine()!;
             Console.WriteLine("");
 
@@ -241,6 +248,7 @@ public class InsertGameScreen
                         string addNewId = Console.ReadLine()!;
                         if (new List<string>() { "YES", "Y" }.Contains(addNewId.ToUpper()))
                         {
+                            ShowCategoriesOptions(categoriesList);
                             addNewIdOption = true;
                             validOption = false;
                         }
@@ -270,7 +278,7 @@ public class InsertGameScreen
                     {
                         GameCategory newGameCategory = new GameCategory()
                         {
-                            GameId = game.Id,
+                            GameId = idGame,
                             CategoryId = selectedCategory.Id
                         };
 
@@ -285,7 +293,7 @@ public class InsertGameScreen
                 }
                 Console.WriteLine("");
 
-                Console.WriteLine("Game linked up to categories:");
+                Console.WriteLine("Game linked up to categories below:");
                 foreach (Category category in categoriesSuccess)
                 {
                     Console.WriteLine($"Id: {category.Id} / Name: {category.Name}");
@@ -300,8 +308,20 @@ public class InsertGameScreen
                     {
                         Console.WriteLine($"Id: {id}");
                     }
+                    
+                    Console.WriteLine("There are some wrong Ids. Would you like to link up another category? (y/n): ");
+                    string addCorrectCategory = Console.ReadLine()!;
+                    if (new List<string>() { "YES", "Y" }.Contains(addCorrectCategory.ToUpper()))
+                    {
+                        isGameLinked = false;
+                        categoryIds.Clear();
+                        categoriesError.Clear();
+                        categoriesSuccess.Clear();
+                    }
+
                 }
                 Console.WriteLine("");
+                
 
             }
             else
@@ -313,5 +333,20 @@ public class InsertGameScreen
             
         } while (!isGameLinked);
 
+    }
+    
+    public static Task LinkPlataform()
+    {
+        return Task.CompletedTask;
+    }
+
+    public static void ShowCategoriesOptions(IEnumerable<Category> categoriesList)
+    {
+        Console.WriteLine("Categories Options");
+        foreach (Category category in categoriesList)
+        {
+            Console.WriteLine($"Id: {category.Id} / Name: {category.Name}");
+        }
+        Console.WriteLine("");
     }
 }
