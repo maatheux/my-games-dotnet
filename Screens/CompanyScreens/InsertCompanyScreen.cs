@@ -6,9 +6,9 @@ namespace MyGames.Screens.CompanyScreens;
 
 public class InsertCompanyScreen
 {
-    public static void Load(bool isPlataformLinkUp = false)
+    public static void Load(bool isPlatformLinkUp = false)
     {
-        if (!isPlataformLinkUp) Console.Clear();
+        if (!isPlatformLinkUp) Console.Clear();
         Console.WriteLine("Insert a new company:");
         Console.WriteLine("");
 
@@ -24,7 +24,7 @@ public class InsertCompanyScreen
 
         Create(newCompany);
         Console.ReadKey();
-        if (!isPlataformLinkUp) 
+        if (!isPlatformLinkUp) 
             InsertScreen.Load();
         else
             Console.Clear();

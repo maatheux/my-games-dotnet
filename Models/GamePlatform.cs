@@ -2,9 +2,9 @@
 
 namespace MyGames.Models;
 
-[Table("GamePlataform")]
-public class GamePlataform
+[Table("GamePlatform")]
+public class GamePlatform
 {
     public int GameId { get; set; }
-    public int PlataformId { get; set; }
+    public int PlatformId { get; set; }
 }

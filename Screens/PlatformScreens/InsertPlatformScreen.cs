@@ -3,45 +3,48 @@ using MyGames.Repositories;
 using MyGames.Screens.CompanyScreens;
 using MyGames.Screens.OptionsScreens;
 
-namespace MyGames.Screens.PlataformScreens;
+namespace MyGames.Screens.PlatformScreens;
 
-public class InsertPlataformScreen
+public class InsertPlatformScreen
 {
-    public static void Load()
+    public static void Load(bool isGameLinkUp = false)
     {
-        Console.Clear();
-        Console.WriteLine("Insert a new plataform:");
+        if (!isGameLinkUp) Console.Clear();
+        Console.WriteLine("Insert a new platform:");
         Console.WriteLine("");
 
-        Plataform newPlataform = new Plataform();
+        Platform newPlatform = new Platform();
         
         Console.Write("Name: ");
-        newPlataform.Name = Console.ReadLine()!;
+        newPlatform.Name = Console.ReadLine()!;
         Console.WriteLine("");
 
-        Plataform linkedPlataform = LinkCompany(newPlataform);
-        newPlataform.IdCompanyOwner = linkedPlataform.IdCompanyOwner;
+        Platform linkedPlatform = LinkCompany(newPlatform);
+        newPlatform.IdCompanyOwner = linkedPlatform.IdCompanyOwner;
         Console.WriteLine("");
         
-        Console.WriteLine($"{newPlataform.Name} - {newPlataform.IdCompanyOwner}");
+        Console.WriteLine($"{newPlatform.Name} - {newPlatform.IdCompanyOwner}");
         Console.ReadKey();
 
-        Create(newPlataform);
+        Create(newPlatform);
         Console.ReadKey();
-        InsertScreen.Load();
+        if (!isGameLinkUp)
+            InsertScreen.Load();
+        else
+            Console.Clear();
         
     }
 
-    private async static void Create(Plataform newPlataform)
+    private async static void Create(Platform newPlatform)
     {
         try
         {
-            Repository<Plataform> repository = new Repository<Plataform>();
+            Repository<Platform> repository = new Repository<Platform>();
             Console.WriteLine("Processing...");
-            await repository.CreateAsync(newPlataform);
+            await repository.CreateAsync(newPlatform);
             Thread.Sleep(2000);
             Console.Clear();
-            Console.WriteLine("New plataform successfully registered!");
+            Console.WriteLine("New platform successfully registered!");
             Console.WriteLine("Press enter to return...");
         }
         catch (Exception e)
@@ -52,9 +55,9 @@ public class InsertPlataformScreen
         }
     }
 
-    private static Plataform LinkCompany(Plataform plataform)
+    private static Platform LinkCompany(Platform platform)
     {
-        bool isPlataformLinked = false;
+        bool isPlatformLinked = false;
         string createNewCompanyOption;
         int companyId;
 
@@ -89,8 +92,8 @@ public class InsertPlataformScreen
                 Company? selectedCompany = companiesList.FirstOrDefault(company => company.Id == companyId);
                 if (selectedCompany != null)
                 {
-                    plataform.IdCompanyOwner = selectedCompany.Id;
-                    isPlataformLinked = true;
+                    platform.IdCompanyOwner = selectedCompany.Id;
+                    isPlatformLinked = true;
                 }
                 else
                 {
@@ -106,9 +109,9 @@ public class InsertPlataformScreen
             }
             
             
-        } while (!isPlataformLinked);
+        } while (!isPlatformLinked);
 
         
-        return plataform;
+        return platform;
     }
 }

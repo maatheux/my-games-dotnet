@@ -3,6 +3,7 @@ using MyGames.Models;
 using MyGames.Repositories;
 using MyGames.Screens.CategoryScreens;
 using MyGames.Screens.OptionsScreens;
+using MyGames.Screens.PlatformScreens;
 using MyGames.Screens.PublisherScreens;
 using MyGames.shared.utils;
 
@@ -107,12 +108,11 @@ public class InsertGameScreen
         int createdGameId = Create(newGame).Result;
 
         newGame.Id = createdGameId;
-
-        //LinkCategory(newGame.Id);
         
-        // Console.WriteLine("333333333333");
-        //
-        Console.WriteLine($"{newGame.Name} - {newGame.Release} - {newGame.Rating} - {newGame.FavoriteFlag} - {newGame.WishlistFlag} - {newGame.PublisherId}");
+        Console.WriteLine("Processing...");
+        Console.Clear();
+        Console.WriteLine("New company successfully registered!");
+        Console.WriteLine("Press enter to return...");
         Console.ReadKey();
         InsertScreen.Load();
 
@@ -128,7 +128,7 @@ public class InsertGameScreen
             //Console.WriteLine("Processing...");
             createdGameId = await repository.CreateReturnId(newGame);
             await LinkCategory(createdGameId);
-            //await LinkPlataform();
+            await LinkPlatform(createdGameId);
             // Console.Clear();
             // Console.WriteLine("New company successfully registered!");
             // Console.WriteLine("Press enter to return...");
@@ -335,9 +335,132 @@ public class InsertGameScreen
 
     }
     
-    public static Task LinkPlataform()
+    public async static Task LinkPlatform(int idGame)
     {
-        return Task.CompletedTask;
+        bool isGameLinked = false;
+        string createNewPlatformOption;
+        IList<int> platformsIds = new List<int>();
+        IList<int> platformsErrors = new List<int>();
+        IList<Platform> platformsSuccess = new List<Platform>();
+        
+        Console.WriteLine("Link Platform Section");
+        Console.WriteLine("-------------------------------------------");
+        Console.WriteLine("");
+
+        do
+        {
+            IEnumerable<Platform> platformsOptions = SelectPlatformScreen.GetPlatforms();
+            ShowPlatformOptions(platformsOptions);
+            
+            Console.WriteLine("Would you like to create a new platform? (y/n): ");
+            createNewPlatformOption = Console.ReadLine()!;
+            Console.WriteLine("");
+
+            if (new List<string>() { "YES", "Y" }.Contains(createNewPlatformOption.ToUpper()))
+            {
+                InsertPlatformScreen.Load(true);
+            }
+            else if (new List<string>() { "NO", "N" }.Contains(createNewPlatformOption.ToUpper()))
+            {
+                bool validOption, addNewIdOption;
+                int platformId;
+                do
+                {
+                    Console.Write("Insert platform id to link up: ");
+                    validOption = int.TryParse(Console.ReadLine()!, out platformId);
+                    if (validOption) platformsIds.Add(platformId);
+                    Console.WriteLine("");
+
+                    do
+                    {
+                        Console.WriteLine("Would you like to link up another platform? (y/n): ");
+                        string addNewId = Console.ReadLine()!;
+                        if (new List<string>() { "YES", "Y" }.Contains(addNewId.ToUpper()))
+                        {
+                            ShowPlatformOptions(platformsOptions);
+                            addNewIdOption = true;
+                            validOption = false;
+                        }
+                        else if (new List<string>() { "NO", "N" }.Contains(addNewId.ToUpper()))
+                            addNewIdOption = true;
+                        else
+                        {
+                            Console.WriteLine("");
+                            Console.WriteLine("Insert a valid option...");
+                            Console.WriteLine("");
+                            addNewIdOption = false;
+                        }
+                        Console.WriteLine("");
+
+                    } while (!addNewIdOption);
+                        
+                } while (!validOption);
+
+                Repository<GamePlatform> gamePlatformCategory = new Repository<GamePlatform>();
+
+                isGameLinked = true;
+
+                foreach (int id in platformsIds)
+                {
+                    Platform? selectedPlatform = platformsOptions.FirstOrDefault(platform => platform.Id == id);
+                    if (selectedPlatform != null)
+                    {
+                        GamePlatform newGamePlatform = new GamePlatform()
+                        {
+                            GameId = idGame,
+                            PlatformId = selectedPlatform.Id
+                        };
+
+                        await gamePlatformCategory.CreateAsync(newGamePlatform);
+                        platformsSuccess.Add(selectedPlatform);
+                    }
+                    else
+                    {
+                        platformsErrors.Add(id);
+                        isGameLinked = false;
+                    }
+                }
+                Console.WriteLine("");
+
+                Console.WriteLine("Game linked up to platforms below:");
+                foreach (Platform platform in platformsSuccess)
+                {
+                    Console.WriteLine($"Id: {platform.Id} / Name: {platform.Name}");
+                }
+                
+                Console.WriteLine("");
+
+                if (!isGameLinked)
+                {
+                    Console.WriteLine("Ids not found: ");
+                    foreach (int id in platformsErrors)
+                    {
+                        Console.WriteLine($"Id: {id}");
+                    }
+                    
+                    Console.WriteLine("There are some wrong Ids. Would you like to link up another platform? (y/n): ");
+                    string addCorrectPlatform = Console.ReadLine()!;
+                    if (new List<string>() { "YES", "Y" }.Contains(addCorrectPlatform.ToUpper()))
+                    {
+                        isGameLinked = false;
+                        platformsIds.Clear();
+                        platformsErrors.Clear();
+                        platformsSuccess.Clear();
+                    }
+
+                }
+                Console.WriteLine("");
+                
+
+            }
+            else
+            {
+                Console.WriteLine("--------------------------------");
+                Console.WriteLine("Insert a valid option...");
+                Console.WriteLine("");
+            }
+            
+        } while (!isGameLinked);
     }
 
     public static void ShowCategoriesOptions(IEnumerable<Category> categoriesList)
@@ -346,6 +469,16 @@ public class InsertGameScreen
         foreach (Category category in categoriesList)
         {
             Console.WriteLine($"Id: {category.Id} / Name: {category.Name}");
+        }
+        Console.WriteLine("");
+    }
+    
+    public static void ShowPlatformOptions(IEnumerable<Platform> platformsList)
+    {
+        Console.WriteLine("Platforms Options");
+        foreach (Platform platform in platformsList)
+        {
+            Console.WriteLine($"Id: {platform.Id} / Name: {platform.Name}");
         }
         Console.WriteLine("");
     }

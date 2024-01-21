@@ -9,5 +9,5 @@ public class Company
     public string Name { get; set; }
     public string Ceo { get; set; }
     [Write(false)]
-    public IEnumerable<Plataform> Plataforms { get; set; } = new List<Plataform>();
+    public IEnumerable<Platform> Plataforms { get; set; } = new List<Platform>();
 }

@@ -17,5 +17,5 @@ public class Game
     [Write(false)]
     public IEnumerable<Category> Categories { get; set; } = new List<Category>();
     [Write(false)]
-    public IEnumerable<Plataform> Plataforms { get; set; } = new List<Plataform>();
+    public IEnumerable<Platform> Plataforms { get; set; } = new List<Platform>();
 }

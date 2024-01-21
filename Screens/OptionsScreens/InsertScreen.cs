@@ -1,7 +1,7 @@
 ﻿using MyGames.Screens.CategoryScreens;
 using MyGames.Screens.CompanyScreens;
 using MyGames.Screens.GameScreens;
-using MyGames.Screens.PlataformScreens;
+using MyGames.Screens.PlatformScreens;
 using MyGames.Screens.PublisherScreens;
 
 namespace MyGames.Screens.OptionsScreens;
@@ -28,7 +28,7 @@ public static class InsertScreen
                 InsertGameScreen.Load();
                 break;
             case 4: 
-                InsertPlataformScreen.Load();
+                InsertPlatformScreen.Load();
                 break;
             case 5: 
                 InsertPublisherScreen.Load();
