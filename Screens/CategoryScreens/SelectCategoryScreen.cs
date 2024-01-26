@@ -1,4 +1,5 @@
-﻿using MyGames.Models;
+﻿using MyGames.Enums;
+using MyGames.Models;
 using MyGames.Repositories;
 using MyGames.Screens.OptionsScreens;
 
@@ -33,7 +34,7 @@ public class SelectCategoryScreen
                 ListCategories();
                 break;
             case 2:
-                //
+                ListCategories(EListWithLinkType.WithLink);
                 break;
             case 3:
                 SelectScreen.Load();
@@ -56,9 +57,28 @@ public class SelectCategoryScreen
         return categoriesList;
     }
 
-    private static void ListCategories()
+    public static IEnumerable<Category> GetCategoriesWithGames()
     {
-        IEnumerable<Category> categoriesList = GetCategories();
+        CategoryRepository repository = new CategoryRepository();
+
+        IEnumerable<Category> categoriesList = repository.GetCategoriesWithGames().Result;
+
+        return categoriesList;
+    }
+
+    private static void ListCategories(EListWithLinkType listType = EListWithLinkType.WithoutLink)
+    {
+        IEnumerable<Category> categoriesList;
+
+        switch (listType)
+        {
+            case EListWithLinkType.WithLink:
+                categoriesList = GetCategoriesWithGames();
+                break;
+            default:
+                categoriesList = GetCategories();
+                break;
+        }
         
         Console.Clear();
         Console.WriteLine("Categories List:");
@@ -66,6 +86,15 @@ public class SelectCategoryScreen
         foreach (Category category in categoriesList)
         {
             Console.WriteLine($"Id: {category.Id} / Name: {category.Name}");
+
+            if (listType == EListWithLinkType.WithLink && category.GamesList.Any())
+            {
+                Console.WriteLine("Games List:");
+                foreach (Game game in category.GamesList)
+                {
+                    Console.WriteLine($"  - Id: {game.Id} / Name: {game.Name}");
+                }
+            }
         }
     }
 }

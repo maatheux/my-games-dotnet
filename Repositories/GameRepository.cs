@@ -6,10 +6,7 @@ namespace MyGames.Repositories;
 
 public class GameRepository : Repository<Game>
 {
-    private readonly SqlConnection _connection;
-
-    public GameRepository() : base() => _connection = base._connection;
-
+    
     public async Task<int> CreateReturnId(Game game)
     {
         string insertSql = @"
