@@ -11,7 +11,15 @@ string CONNECTION_STRING =
 
 Database.Connection = new SqlConnection(CONNECTION_STRING);
 
-Database.Connection.Open();
+try
+{
+    Database.Connection.Open();
+}
+catch (Exception e)
+{
+    Console.WriteLine("Oops! It was not possible connect to database...");
+    Console.WriteLine($"Error: {e.Message}");
+}
 
 OptionsScreen.Load();
 

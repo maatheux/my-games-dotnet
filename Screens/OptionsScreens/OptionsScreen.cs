@@ -14,7 +14,7 @@ public static class OptionsScreen
         switch (actionOption)
         {
             case 1: InsertScreen.Load(); break;
-            case 2: break;
+            case 2: SelectScreen.Load(); break;
             case 3: break;
             case 4: break;
             case 5:
