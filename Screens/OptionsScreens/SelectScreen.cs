@@ -1,4 +1,5 @@
 ﻿using MyGames.Screens.CategoryScreens;
+using MyGames.Screens.CompanyScreens;
 
 namespace MyGames.Screens.OptionsScreens;
 
@@ -18,7 +19,7 @@ public class SelectScreen
                 SelectCategoryScreen.Load();
                 break;
             case 2:
-                //
+                SelectCompanyScreen.Load();
                 break;
             case 3:
                 //
