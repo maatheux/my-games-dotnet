@@ -1,5 +1,6 @@
 ﻿using MyGames.Screens.CategoryScreens;
 using MyGames.Screens.CompanyScreens;
+using MyGames.Screens.PublisherScreens;
 
 namespace MyGames.Screens.OptionsScreens;
 
@@ -28,7 +29,7 @@ public class SelectScreen
                 //
                 break;
             case 5:
-                //
+                SelectPublisherScreen.Load();
                 break;
             case 6:
                 OptionsScreen.Load();
