@@ -31,8 +31,8 @@ public class CategoryRepository : Repository<Category>
                 categories.Add(categoryInList);
             }
             else
-            if (game != null)
-                categoryInList.GamesList.Add(game);
+                if (game != null)
+                    categoryInList.GamesList.Add(game);
 
             return category;
         }, splitOn: "Id");

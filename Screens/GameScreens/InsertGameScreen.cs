@@ -111,7 +111,7 @@ public class InsertGameScreen
         
         Console.WriteLine("Processing...");
         Console.Clear();
-        Console.WriteLine("New company successfully registered!");
+        Console.WriteLine("New game successfully registered!");
         Console.WriteLine("Press enter to return...");
         Console.ReadKey();
         InsertScreen.Load();
