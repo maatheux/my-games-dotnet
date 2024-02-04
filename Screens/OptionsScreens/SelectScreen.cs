@@ -1,5 +1,6 @@
 ﻿using MyGames.Screens.CategoryScreens;
 using MyGames.Screens.CompanyScreens;
+using MyGames.Screens.GameScreens;
 using MyGames.Screens.PlatformScreens;
 using MyGames.Screens.PublisherScreens;
 
@@ -24,7 +25,7 @@ public class SelectScreen
                 SelectCompanyScreen.Load();
                 break;
             case 3:
-                //
+                SelectGameScreen.Load();
                 break;
             case 4:
                 SelectPlatformScreen.Load();

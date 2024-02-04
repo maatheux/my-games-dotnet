@@ -1,4 +1,5 @@
-﻿using Dapper.Contrib.Extensions;
+﻿using System.Collections;
+using Dapper.Contrib.Extensions;
 
 namespace MyGames.Models;
 
@@ -15,7 +16,9 @@ public class Game
     public int PublisherId { get; set; }
 
     [Write(false)]
-    public IEnumerable<Category> Categories { get; set; } = new List<Category>();
+    public Publisher? Publisher { get; set; }
     [Write(false)]
-    public IEnumerable<Platform> Plataforms { get; set; } = new List<Platform>();
+    public IList<Category> Categories { get; set; } = new List<Category>();
+    [Write(false)]
+    public IList<Platform> Platforms { get; set; } = new List<Platform>();
 }

@@ -32,7 +32,7 @@ public class PlatformRepository : Repository<Platform>
 			        platformInList.GamesList.Add(game);
 
 		        if (company != null)
-			        platform.Company = company;
+			        platformInList.Company = company;
 		        
 		        platforms.Add(platformInList);
 	        }
@@ -50,4 +50,5 @@ public class PlatformRepository : Repository<Platform>
 
         return platforms;
     }
+    
 }
