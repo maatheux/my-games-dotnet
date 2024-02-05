@@ -7,7 +7,7 @@ namespace MyGames.Screens.PublisherScreens;
 
 public class SelectPublisherScreen
 {
-    public static void Load()
+    public static void Load(bool isSelectOption = true)
     {
         Console.Clear();
         Console.WriteLine("Publishers List:");
@@ -20,8 +20,11 @@ public class SelectPublisherScreen
             Console.WriteLine($"Id: {publisher.Id} / Name: {publisher.Name} / Country: {publisher.Country}");
         }
 
-        Console.ReadKey();
-        SelectScreen.Load();
+        if (isSelectOption)
+        {
+            Console.ReadKey();
+            SelectScreen.Load();
+        }
     }
 
     public static IEnumerable<Publisher> GetPublishers()
