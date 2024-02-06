@@ -1,4 +1,6 @@
-﻿using MyGames.Screens.PublisherScreens;
+﻿using MyGames.Screens.CategoryScreens;
+using MyGames.Screens.CompanyScreens;
+using MyGames.Screens.PublisherScreens;
 
 namespace MyGames.Screens.OptionsScreens;
 
@@ -15,10 +17,10 @@ public class DeleteScreen
         switch (deleteOption)
         {
             case 1:
-                //
+                DeleteCategoryScreen.Load();
                 break;
             case 2:
-                //
+                DeleteCompanyScreen.Load();
                 break;
             case 3:
                 //

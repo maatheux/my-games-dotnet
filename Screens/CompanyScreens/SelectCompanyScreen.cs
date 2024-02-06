@@ -6,7 +6,7 @@ namespace MyGames.Screens.CompanyScreens;
 
 public class SelectCompanyScreen
 {
-    public static void Load()
+    public static void Load(bool isSelectOption = true)
     {
         Console.Clear();
         Console.WriteLine("Companies List:");
@@ -18,8 +18,11 @@ public class SelectCompanyScreen
             Console.WriteLine($"Id: {company.Id} / Name: {company.Name} / CEO: {company.Ceo}");
         }
 
-        Console.ReadKey();
-        SelectScreen.Load();
+        if (isSelectOption)
+        {
+            Console.ReadKey();
+            SelectScreen.Load();
+        }
     }
 
     public static IEnumerable<Company> GetCompanies()

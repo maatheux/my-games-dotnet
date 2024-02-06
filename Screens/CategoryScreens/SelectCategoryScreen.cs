@@ -66,7 +66,7 @@ public class SelectCategoryScreen
         return categoriesList;
     }
 
-    private static void ListCategories(EListWithLinkType listType = EListWithLinkType.WithoutLink)
+    public static void ListCategories(EListWithLinkType listType = EListWithLinkType.WithoutLink)
     {
         IEnumerable<Category> categoriesList;
 

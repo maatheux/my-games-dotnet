@@ -1,20 +1,21 @@
-﻿using MyGames.Models;
+﻿using MyGames.Enums;
+using MyGames.Models;
 using MyGames.Repositories;
+using MyGames.Screens.CompanyScreens;
 using MyGames.Screens.OptionsScreens;
 
-namespace MyGames.Screens.PublisherScreens;
+namespace MyGames.Screens.CategoryScreens;
 
-public class DeletePublisherScreen
+public class DeleteCategoryScreen
 {
     public static void Load()
     {
-        
         short deleteOption;
         bool deleteOptionValid;
         do
         {
             Console.Clear();
-            SelectPublisherScreen.Load(false);
+            SelectCategoryScreen.ListCategories();
             Console.WriteLine("");
             Console.WriteLine("Insert a valid Id to delete:");
 
@@ -29,22 +30,25 @@ public class DeletePublisherScreen
             
         } while (!deleteOptionValid);
 
-        DeletePublisher(deleteOption);
-
+        DeleteCompany(deleteOption);
+        
         Console.ReadKey();
         DeleteScreen.Load();
-
     }
 
-    private static async Task DeletePublisher(short id)
+    private static async Task DeleteCompany(short id)
     {
         try
         {
-            Repository<Publisher> repository = new Repository<Publisher>();
+            GameCategoryRepository gameCategoryRepository = new GameCategoryRepository();
+            await gameCategoryRepository.DeleteGameCategoryAsync(id);
+            
 
-            await repository.DeleteAsync(id);
+            Repository<Category> categoryRepository = new Repository<Category>();
 
-            Console.WriteLine("Publisher deleted successfully!");
+            await categoryRepository.DeleteAsync(id);
+            
+            Console.WriteLine("Category deleted successfully!");
         }
         catch (ArgumentException e)
         {
