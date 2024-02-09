@@ -22,9 +22,6 @@ public class InsertPlatformScreen
         Platform linkedPlatform = LinkCompany(newPlatform);
         newPlatform.IdCompanyOwner = linkedPlatform.IdCompanyOwner;
         Console.WriteLine("");
-        
-        Console.WriteLine($"{newPlatform.Name} - {newPlatform.IdCompanyOwner}");
-        Console.ReadKey();
 
         Create(newPlatform);
         Console.ReadKey();

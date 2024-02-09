@@ -66,7 +66,7 @@ public class SelectPlatformScreen
         return platformsList;
     }
 
-    private static void ListPlatforms(EListWithLinkType listType = EListWithLinkType.WithoutLink)
+    public static void ListPlatforms(EListWithLinkType listType = EListWithLinkType.WithoutLink)
     {
         IEnumerable<Platform> platformsList;
         

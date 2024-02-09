@@ -1,12 +1,10 @@
-﻿using MyGames.Enums;
-using MyGames.Models;
+﻿using MyGames.Models;
 using MyGames.Repositories;
-using MyGames.Screens.CompanyScreens;
 using MyGames.Screens.OptionsScreens;
 
-namespace MyGames.Screens.CategoryScreens;
+namespace MyGames.Screens.PlatformScreens;
 
-public class DeleteCategoryScreen
+public class DeletePlatformScreen
 {
     public static void Load()
     {
@@ -15,7 +13,7 @@ public class DeleteCategoryScreen
         do
         {
             Console.Clear();
-            SelectCategoryScreen.ListCategories();
+            SelectPlatformScreen.ListPlatforms();
             Console.WriteLine("");
             Console.WriteLine("Insert a valid Id to delete:");
 
@@ -30,29 +28,27 @@ public class DeleteCategoryScreen
             
         } while (!deleteOptionValid);
 
-        DeleteCompany(deleteOption);
-        
+        DeletePlatform(deleteOption);
+
         Console.ReadKey();
         DeleteScreen.Load();
     }
 
-    private static async Task DeleteCompany(short id)
+    private static async Task DeletePlatform(int id)
     {
         try
         {
-            GameCategoryRepository gameCategoryRepository = new GameCategoryRepository();
-            await gameCategoryRepository.DeleteGameCategoryAsync(id);
-            
+            GamePlatformRepository gamePlatformRepository = new GamePlatformRepository();
+            await gamePlatformRepository.DeleteGamePlatformByPlatformId(id);
 
-            Repository<Category> categoryRepository = new Repository<Category>();
+            Repository<Platform> platformRepository = new Repository<Platform>();
+            await platformRepository.DeleteAsync(id);
 
-            await categoryRepository.DeleteAsync(id);
-            
-            Console.WriteLine("Company deleted successfully!");
+            Console.WriteLine("Platform deleted successfully!");
         }
         catch (ArgumentException e)
         {
-            Console.WriteLine("Company not found! Insert a valid Company Id...");
+            Console.WriteLine("Platform not found! Insert a valid Platform Id...");
             throw;
         }
         catch (Microsoft.Data.SqlClient.SqlException e)
@@ -67,5 +63,6 @@ public class DeleteCategoryScreen
             Console.WriteLine(e);
             throw;
         }
+
     }
 }
