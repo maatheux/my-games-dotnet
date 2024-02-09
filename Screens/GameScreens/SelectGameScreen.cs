@@ -80,7 +80,7 @@ public class SelectGameScreen
         return gamesList;
     }
 
-    private static void ListGames()
+    public static void ListGames()
     {
         IEnumerable<Game> gamesList = GetGames();
         

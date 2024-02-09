@@ -1,12 +1,10 @@
-﻿using MyGames.Enums;
-using MyGames.Models;
+﻿using MyGames.Models;
 using MyGames.Repositories;
-using MyGames.Screens.CompanyScreens;
 using MyGames.Screens.OptionsScreens;
 
-namespace MyGames.Screens.CategoryScreens;
+namespace MyGames.Screens.GameScreens;
 
-public class DeleteCategoryScreen
+public class DeleteGameScreen
 {
     public static void Load()
     {
@@ -15,7 +13,7 @@ public class DeleteCategoryScreen
         do
         {
             Console.Clear();
-            SelectCategoryScreen.ListCategories();
+            SelectGameScreen.ListGames();
             Console.WriteLine("");
             Console.WriteLine("Insert a valid Id to delete:");
 
@@ -30,29 +28,32 @@ public class DeleteCategoryScreen
             
         } while (!deleteOptionValid);
 
-        DeleteCompany(deleteOption);
-        
+        DeleteGame(deleteOption);
+
         Console.ReadKey();
         DeleteScreen.Load();
+
     }
 
-    private static async Task DeleteCompany(int id)
+    private static async Task DeleteGame(int id)
     {
         try
         {
             GameCategoryRepository gameCategoryRepository = new GameCategoryRepository();
-            await gameCategoryRepository.DeleteGameCategoryByCategoryIdAsync(id);
-            
+            await gameCategoryRepository.DeleteGameCategoryByGameIsAsync(id);
 
-            Repository<Category> categoryRepository = new Repository<Category>();
+            GamePlatformRepository gamePlatformRepository = new GamePlatformRepository();
+            await gamePlatformRepository.DeleteGamePlatformByGameId(id);
 
-            await categoryRepository.DeleteAsync(id);
+            Repository<Game> gameRepository = new Repository<Game>();
+            await gameRepository.DeleteAsync(id);
             
-            Console.WriteLine("Company deleted successfully!");
+            Console.WriteLine("Game deleted successfully!");
+
         }
         catch (ArgumentException e)
         {
-            Console.WriteLine("Company not found! Insert a valid Company Id...");
+            Console.WriteLine("Game not found! Insert a valid Game Id...");
             throw;
         }
         catch (Microsoft.Data.SqlClient.SqlException e)

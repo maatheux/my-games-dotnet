@@ -20,7 +20,7 @@ public class GameCategoryRepository : Repository<GameCategory>
         return gameCategoryList;
     }
 
-    public async Task DeleteGameCategoryAsync(int id)
+    public async Task DeleteGameCategoryByCategoryIdAsync(int id)
     {
         string query = """
                            DELETE FROM MyGames.dbo.GameCategory
@@ -31,5 +31,18 @@ public class GameCategoryRepository : Repository<GameCategory>
         {
             CategoryId = id
         });
+    }
+
+    public async Task DeleteGameCategoryByGameIsAsync(int id)
+    {
+        string query = """
+                           DELETE FROM MyGames.dbo.GameCategory
+                           WHERE GameId=@GameId
+                       """;
+        
+        await _connection.ExecuteAsync(query, new
+        {
+            GameId = id
+        });  
     }
 }

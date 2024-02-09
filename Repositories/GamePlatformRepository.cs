@@ -17,4 +17,17 @@ public class GamePlatformRepository : Repository<GamePlatform>
             PlatformId = id
         });
     }
+
+    public async Task DeleteGamePlatformByGameId(int id)
+    {
+        string query = """
+                           DELETE FROM MyGames.dbo.GamePlatform
+                           WHERE GameId=@GameId
+                       """;
+
+        await _connection.ExecuteAsync(query, new
+        {
+            GameId = id
+        });
+    }
 }
