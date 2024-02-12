@@ -16,7 +16,7 @@ public static class OptionsScreen
             case 1: InsertScreen.Load(); break;
             case 2: SelectScreen.Load(); break;
             case 3: DeleteScreen.Load(); break;
-            case 4: break;
+            case 4: UpdateScreen.Load(); break;
             case 5:
                 System.Environment.Exit(0);
                 break;

@@ -15,7 +15,7 @@ public class Repository<T> where T : class
     public async Task<IEnumerable<T>> ListAsync()
         => await _connection.GetAllAsync<T>();
 
-    public async Task<T> GetAsync(int id)
+    public async Task<T>? GetAsync(int id)
         => await _connection.GetAsync<T>(id);
 
     public async Task DeleteAsync(T model)
@@ -30,4 +30,7 @@ public class Repository<T> where T : class
             await _connection.DeleteAsync<T>(model);
         }
     }
+
+    public async Task UpdateAsync(T model)
+        => await _connection.UpdateAsync(model);
 }
