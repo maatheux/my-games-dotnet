@@ -2,9 +2,9 @@
 using MyGames.Repositories;
 using MyGames.Screens.OptionsScreens;
 
-namespace MyGames.Screens.PublisherScreens;
+namespace MyGames.Screens.CategoryScreens;
 
-public class UpdatePublisherScreen
+public class UpdateCategoryScreen
 {
     public static void Load()
     {
@@ -13,7 +13,7 @@ public class UpdatePublisherScreen
         do
         {
             Console.Clear();
-            SelectPublisherScreen.Load(false);
+            SelectCategoryScreen.ListCategories();
             Console.WriteLine("");
             Console.WriteLine("Insert a valid Id to update:");
 
@@ -28,19 +28,19 @@ public class UpdatePublisherScreen
             
         } while (!updateOptionValid);
 
-        UpdatePublisher(updateOption);
+        UpdateCategory(updateOption);
         
         Console.ReadKey();
         UpdateScreen.Load();
-
+        
     }
 
-    private static async Task UpdatePublisher(int id)
+    public static async Task UpdateCategory(int id)
     {
-        Repository<Publisher> repository = new Repository<Publisher>();
-        Publisher? publisherToUpdate = repository.GetAsync(id)?.Result;
+        Repository<Category> repository = new Repository<Category>();
+        Category? categoryToUpdate = repository.GetAsync(id)?.Result;
 
-        if (publisherToUpdate == null)
+        if (categoryToUpdate == null)
         {
             Console.Clear();
             Console.WriteLine("Id not exists...");
@@ -51,14 +51,14 @@ public class UpdatePublisherScreen
             do
             {
                 Console.WriteLine("");
-                Console.WriteLine($"Would you like to update 'Name' value (y/n)? (Current value: {publisherToUpdate.Name})");
+                Console.WriteLine($"Would you like to update 'Name' value (y/n)? (Current value: {categoryToUpdate.Name})");
                 string updateNameOption = Console.ReadLine()!;
 
                 if (new List<string>() { "YES", "Y" }.Contains(updateNameOption.ToUpper()))
                 {
                     Console.WriteLine("");
                     Console.WriteLine("Insert a new value of 'Name':");
-                    publisherToUpdate.Name = Console.ReadLine()!;
+                    categoryToUpdate.Name = Console.ReadLine()!;
                     updateNameOptionIsValid = true;
                 }
                 else if (new List<string>() { "NO", "N" }.Contains(updateNameOption.ToUpper()))
@@ -71,44 +71,20 @@ public class UpdatePublisherScreen
                 }
 
             } while (!updateNameOptionIsValid);
-
-            bool updateCountryOptionIsValid = false;
-            do
-            {
-                Console.WriteLine("");
-                Console.WriteLine($"Would you like to update 'Country' value (y/n)? (Current value: {publisherToUpdate.Country})");
-                string updateCountryOption = Console.ReadLine()!;
-    
-                if (new List<string>() { "YES", "Y" }.Contains(updateCountryOption.ToUpper()))
-                {
-                    Console.WriteLine("");
-                    Console.WriteLine("Insert a new value of 'Country':");
-                    publisherToUpdate.Country = Console.ReadLine()!;
-                    updateCountryOptionIsValid = true;
-                }
-                else if (new List<string>() { "NO", "N" }.Contains(updateCountryOption.ToUpper()))
-                    updateCountryOptionIsValid = true;
-                else
-                {
-                    Console.WriteLine("--------------------------------");
-                    Console.WriteLine("Insert a valid option...");
-                    Console.WriteLine("");
-                }
-    
-            } while (!updateCountryOptionIsValid);
-    
+            
             try
             {
-                await repository.UpdateAsync(publisherToUpdate);
+                await repository.UpdateAsync(categoryToUpdate);
                 Console.WriteLine("");
-                Console.WriteLine("Publisher was updated successfully!");
+                Console.WriteLine("Category was updated successfully!");
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Error message: {e.Message}");
+                Console.WriteLine(e);
                 throw;
             }
-        }
+            
+        }        
         
     }
 }

@@ -1,4 +1,5 @@
-﻿using MyGames.Screens.PublisherScreens;
+﻿using MyGames.Screens.CategoryScreens;
+using MyGames.Screens.PublisherScreens;
 
 namespace MyGames.Screens.OptionsScreens;
 
@@ -28,7 +29,7 @@ public class UpdateScreen
         switch (updateScreenOption)
         {
             case 1:
-                // 
+                UpdateCategoryScreen.Load(); 
                 break;
             case 2:
                 // 
