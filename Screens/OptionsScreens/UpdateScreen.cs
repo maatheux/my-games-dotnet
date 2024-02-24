@@ -1,5 +1,6 @@
 ﻿using MyGames.Screens.CategoryScreens;
 using MyGames.Screens.CompanyScreens;
+using MyGames.Screens.GameScreens;
 using MyGames.Screens.PlatformScreens;
 using MyGames.Screens.PublisherScreens;
 
@@ -37,7 +38,7 @@ public class UpdateScreen
                 UpdateCompanyScreen.Load();
                 break;
             case 3:
-                // 
+                UpdateGameScreen.Load(); 
                 break;
             case 4:
                 UpdatePlataformScreen.Load();

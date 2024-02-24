@@ -115,7 +115,7 @@ public class SelectGameScreen
         }
     }
 
-    private static void ListGamesWithAllInfo()
+    public static void ListGamesWithAllInfo()
     {
         IEnumerable<Game> gamesList = GetGamesWithLinks();
         
