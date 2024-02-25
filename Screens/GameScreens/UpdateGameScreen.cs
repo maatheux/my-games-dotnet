@@ -2,6 +2,7 @@
 using MyGames.Models;
 using MyGames.Repositories;
 using MyGames.Screens.OptionsScreens;
+using MyGames.Screens.PublisherScreens;
 
 namespace MyGames.Screens.GameScreens;
 
@@ -223,6 +224,48 @@ public class UpdateGameScreen
                 }
 
             } while (!updateFavoriteFlagOptionIsValid);
+
+            Repository<Publisher> publisherRepository = new Repository<Publisher>();
+            Publisher? linkedPublisher = publisherRepository.GetAsync(gameToUpdate.PublisherId)?.Result;
+            bool updatePublisherIdOptionIsValid = false;
+            do
+            {
+                Console.WriteLine("");
+                Console.WriteLine($"Would you like to update 'Publisher' value (y/n)? (Current value: {linkedPublisher?.Name})");
+                string updatePublisherIdOption = Console.ReadLine()!;
+        
+                if (new List<string>() { "YES", "Y" }.Contains(updatePublisherIdOption.ToUpper()))
+                {
+                    do
+                    {
+                        Console.WriteLine("");
+                        SelectPublisherScreen.Load(false);
+                        Console.WriteLine("");
+                        Console.WriteLine("Insert a valid id to update value of 'Publisher':");
+                        int newId;
+                        updatePublisherIdOptionIsValid = int.TryParse(Console.ReadLine()!, out newId);
+                    
+                        if (updatePublisherIdOptionIsValid)
+                            gameToUpdate.PublisherId = newId;
+                        else
+                        {
+                            Console.WriteLine("--------------------------------");
+                            Console.WriteLine("Insert a valid Id...");
+                            Console.WriteLine("");
+                        }
+                    } while (!updatePublisherIdOptionIsValid);
+                    
+                }
+                else if (new List<string>() { "NO", "N" }.Contains(updatePublisherIdOption.ToUpper()))
+                    updatePublisherIdOptionIsValid = true;
+                else
+                {
+                    Console.WriteLine("--------------------------------");
+                    Console.WriteLine("Insert a valid option...");
+                    Console.WriteLine("");
+                }
+        
+            } while (!updatePublisherIdOptionIsValid);
             
             // Update publisher, categories and plataforms
 
