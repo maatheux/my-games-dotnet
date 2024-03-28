@@ -21,7 +21,7 @@ Siga as etapas abaixo para configurar o projeto localmente:
 1. Clone o repositório:
 
    ```shell
-   git clone https://github.com/maatheux/convert-img-to-pdf-gui.git
+   git clone https://github.com/maatheux/my-games-dotnet.git
    ```
 
 2. Execute este [script sql](scripts-sql/create-database-tables-sql.sql) de criação do banco de dados
